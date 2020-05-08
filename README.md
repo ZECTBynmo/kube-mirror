@@ -1,10 +1,10 @@
 # Kube-mirror
 
-Mirror a kubernetes environment locally - forwarding ports of services and modifying your hosts file so that services can connect to eachother.
+Mirror a kubernetes environment locally
 
 ## Why?
 
-Kubernetes encourages microservices and inter-dependent servers. That's a great pattern, but sometimes debugging can be difficult because you need to run multiple services to work on or test functionality.
+Kubernetes encourages microservices. That's a great development pattern, but sometimes debugging can be difficult because you need to run multiple services to work on or test functionality.
 
 One approach is to setup a local Kubernetes cluster with a tool like `minikube` which can hold a local version of every service you your production cluster. That's great for a lot of use cases, but it can sometimes be cumbersome to setup, and it's easy to let your local cluster drift from what's in your production environment. Also, if you need to switch between deployments in two different clusters you'll have a hard time doing that.
 
