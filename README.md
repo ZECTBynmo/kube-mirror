@@ -6,7 +6,7 @@ Mirror a kubernetes environment locally
 
 Kubernetes encourages microservices. That's a great development pattern, but sometimes debugging can be difficult because you need to run multiple services to work on or test functionality.
 
-One approach is to setup a local Kubernetes cluster with a tool like `minikube` which can hold a local version of every service you your production cluster. That's great for a lot of use cases, but it can sometimes be cumbersome to setup, and it's easy to let your local cluster drift from what's in your production environment. Also, if you need to switch between deployments in two different clusters you'll have a hard time doing that.
+One approach is to setup a local Kubernetes cluster with a tool like `minikube` which can hold a local version of every service you your production cluster. Unfortunately it can sometimes be cumbersome to setup, and it's easy to let your local cluster drift from what's in your production environment. Also, if you need to switch between deployments in two different clusters you'll have a hard time doing that.
 
 `kube-mirror` lets you get back to basics. Run the service you're trying to debug locally, using `npm start` directly, by using `kubectl port-forward` on your services, and putting entries into your hosts file so that your local service can connect to mirrored services as if it were in the cluster.
 
