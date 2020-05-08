@@ -14,6 +14,8 @@ One approach is to setup a local Kubernetes cluster with a tool like `minikube` 
 
 `npm install -g kube-mirror`
 
+Note: Installation will require `sudo` on some systems for the ability to modify hosts files.
+
 ## Configuration yaml
 
 You'll need to create a configuration file that lets kube-mirror know some information about your cluster
@@ -46,3 +48,7 @@ Mirror an entire environments
 If you're debugging a specific service locally, you may want to omit it from the mirror
 
 `kube-mirror mirror prod --omit mongo,app`
+
+Once you're done debugging a given environment, you can clean up your hosts file using:
+
+`kube-mirror remove prod`

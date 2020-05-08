@@ -2,10 +2,9 @@
 const KubeMirror = require('../src')
 
 const {argv} = require('yargs')
-  .alias('l', 'load')
-  .describe('l', 'load in a mirror configuration yaml')
-  .alias('m', 'mirror')
-  .describe('m', 'mirror a kubernetes environment locally')
+  .describe('load', 'load in a mirror configuration yaml')
+  .describe('mirror', 'mirror a kubernetes environment locally')
+  .describe('remove', 'stop mirroring, remove hosts files entries')
 
 const [command, ...args] = argv._
 
@@ -14,6 +13,12 @@ const commands = {
     const opts = argv
     const mirror = new KubeMirror()
     await mirror.mirror(clusterName, opts)
+  },
+
+  remove: async (clusterName) => {
+    const opts = argv
+    const mirror = new KubeMirror()
+    await mirror.remove(clusterName, opts)
   },
 
   load: async (path) => {
