@@ -35,18 +35,6 @@ class KubeMirror {
     const services = configYaml.services
 
     for (let serviceName in services) {
-      let shouldSkip = false
-      for (let item of omit) {
-        if (item.trim() === serviceName) {
-          shouldSkip = true
-          break
-        }
-      }
-
-      if (shouldSkip) {
-        continue
-      }
-
       const service = services[serviceName]
       const forwardName = service.name || serviceName
 
@@ -59,6 +47,18 @@ class KubeMirror {
         })
 
         console.log(`Setup hosts file entry for ${forwardName}`)
+      }
+
+      let shouldSkip = false
+      for (let item of omit) {
+        if (item.trim() === serviceName) {
+          shouldSkip = true
+          break
+        }
+      }
+
+      if (shouldSkip || service.omit || service.skip) {
+        continue
       }
 
       const targetPort = service.targetPort || service.localPort
@@ -76,6 +76,10 @@ class KubeMirror {
     const config = db.get('configs')
       .find({name: clusterName})
       .value()
+
+    if (config === undefined) {
+      console.log(`No config found for ${clusterName}, try running "kube-mirror load [yaml path] first`)
+    }
 
     const configFile = fs.readFileSync(config.path, 'utf8')
     const configYaml = yaml.safeLoad(configFile)

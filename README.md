@@ -10,6 +10,8 @@ One approach is to setup a local Kubernetes cluster with a tool like `minikube` 
 
 `kube-mirror` lets you get back to basics. Run the service you're trying to debug locally, using `npm start` directly, by using `kubectl port-forward` on your services, and putting entries into your hosts file so that your local service can connect to mirrored services as if it were in the cluster.
 
+Note: `kube-mirror` will allow your local service to interact with remote services. It will not allow remote services to make requests to your local services.
+
 ## Installation
 
 `npm install -g kube-mirror`
