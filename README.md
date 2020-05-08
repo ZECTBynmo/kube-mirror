@@ -39,6 +39,8 @@ Once that's setup, you can load the config into kube-mirror
 
 `kube-mirror load ./mirror-config.yaml`
 
+`kube-mirror` only stores the path to your config file, so updates will be automatically reflected 
+
 ## Usage
 
 Mirror an entire environments
