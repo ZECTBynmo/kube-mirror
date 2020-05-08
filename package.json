@@ -1,0 +1,24 @@
+{
+  "name": "kube-mirror",
+  "version": "0.0.1",
+  "description": "mirror kubernetes environments locally",
+  "main": "src/index.js",
+  "bin": {
+    "kube-mirror": "bin/main.js",
+    "km": "bin/main.js"
+  },
+  "scripts": {
+    "test": "node test/main.js"
+  },
+  "keywords": [
+    "kubernetes"
+  ],
+  "author": "ZECTBynmo (michael.vegeto@gmail.com)",
+  "license": "MIT",
+  "dependencies": {
+    "cross-spawn": "^7.0.2",
+    "js-yaml": "^3.13.1",
+    "lowdb": "^1.0.0",
+    "yargs": "^15.3.1"
+  }
+}
