@@ -11,8 +11,9 @@ const [command, ...args] = argv._
 
 const commands = {
   mirror: async (clusterName) => {
+    const opts = argv
     const mirror = new KubeMirror()
-    await mirror.mirror(clusterName)
+    await mirror.mirror(clusterName, opts)
   },
 
   load: async (path) => {

@@ -12,16 +12,33 @@ db.defaults({
 }).write()
 
 class KubeMirror {
-  async mirror(clusterName) {
+  async mirror(clusterName, opts={}) {
+    console.log("Mirroring", clusterName)
+
     const config = db.get('configs')
       .find({name: clusterName})
       .value()
 
     const configFile = fs.readFileSync(config.path, 'utf8')
     const configYaml = yaml.safeLoad(configFile)
+    
+    const omit = (opts.omit || '').split(',')
+    console.log("Omitting", omit.join(', '))
     const services = configYaml.services
 
     for (let serviceName in services) {
+      let shouldSkip = false
+      for (let item of omit) {
+        if (item.trim() === serviceName) {
+          shouldSkip = true
+          break
+        }
+      }
+
+      if (shouldSkip) {
+        continue
+      }
+
       const service = services[serviceName]
 
       const forwardName = service.name || serviceName
