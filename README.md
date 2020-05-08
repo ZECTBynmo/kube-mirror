@@ -29,6 +29,8 @@ services:
     name: redis-deployment
     port: 51235
     localPort: 6543
+  app:
+    port: 9999
 ```
 
 Once that's setup, you can load the config into kube-mirror
@@ -42,3 +44,5 @@ Mirror an entire environments
 `kube-mirror mirror prod`
 
 If you're debugging a specific service locally, you may want to omit it from the mirror
+
+`kube-mirror mirror prod --omit mongo,app`
