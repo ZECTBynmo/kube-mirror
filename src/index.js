@@ -68,6 +68,42 @@ class KubeMirror {
 
       const child = spawn('kubectl', command, {stdio: 'inherit'})
     }
+
+    const pods = configYaml.pods
+
+    for (let pod of pods) {
+      const forwardName = pod.name
+
+      // Setup hosts file entry
+      if (!opts.skipHostsFile) {
+        await new Promise((resolve, reject) => {
+          hostile.set('127.0.0.1', forwardName, (err) => {
+            err ? reject(err) : resolve()
+          })
+        })
+
+        console.log(`Setup hosts file entry for ${forwardName}`)
+      }
+
+      let shouldSkip = false
+      for (let item of omit) {
+        if (item.trim() === pod.name) {
+          shouldSkip = true
+          break
+        }
+      }
+
+      if (shouldSkip || pod.omit || pod.skip) {
+        continue
+      }
+
+      const targetPort = pod.targetPort || pod.localPort
+      const portString = targetPort ? `${pod.targetPort}:${pod.port}` : pod.port
+
+      const command = ['port-forward', `pods/${forwardName}`, portString]
+
+      const child = spawn('kubectl', command, {stdio: 'inherit'})
+    }
   }
 
   async remove(clusterName, opts={}) {
@@ -89,7 +125,7 @@ class KubeMirror {
       console.log("Omitting", omit.join(', '))
     }
 
-    const services = configYaml.services
+    const services = configYaml.services || []
 
     for (let serviceName in services) {
       let shouldSkip = false
@@ -106,6 +142,30 @@ class KubeMirror {
 
       const service = services[serviceName]
       const forwardName = service.name || serviceName
+
+      await new Promise((resolve, reject) => {
+        hostile.remove('127.0.0.1', forwardName, (err) => {
+          err ? reject(err) : resolve()
+        })
+      })
+    }
+
+    const pods = configYaml.pods || []
+
+    for (let pod of pods) {
+      let shouldSkip = false
+      for (let item of omit) {
+        if (item.trim() === pod.name) {
+          shouldSkip = true
+          break
+        }
+      }
+
+      if (shouldSkip) {
+        continue
+      }
+
+      const forwardName = pod.name
 
       await new Promise((resolve, reject) => {
         hostile.remove('127.0.0.1', forwardName, (err) => {

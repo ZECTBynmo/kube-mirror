@@ -35,6 +35,9 @@ services:
     localPort: 6543
   app:
     port: 9999
+pods:
+  - name: mypod-21s25a
+    port: 5210
 ```
 
 Once that's setup, you can load the config into kube-mirror
